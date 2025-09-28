@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>W4R-LOCK Dashboard</title>
+  <style>
+    body{background:#0f1724;color:#cbd5e1;font-family:monospace;padding:20px}
+    .card{background:#071029;padding:12px;border-radius:8px;margin-bottom:10px}
+    h1{color:#7dd3fc}
+    table{width:100%;border-collapse:collapse}
+    th,td{padding:6px;border-bottom:1px solid #0b1220}
+    .banner{color:#94a3b8;font-size:0.9em}
+  </style>
+</head>
+<body>
+  <h1>W4R-LOCK · Scan Results</h1>
+  {% if results %}
+  {% for r in results %}
+  <div class="card">
+    <div><strong>Target:</strong> {{ r.target }}</div>
+    <div><strong>Scanned ports:</strong> {{ r.scanned_ports }}</div>
+    <div><strong>Duration:</strong> {{ "%.2f"|format(r.duration_s) }}s</div>
+    <table>
+      <thead><tr><th>Port</th><th>Service</th><th>Banner</th></tr></thead>
+      <tbody>
+      {% for p in r.open_ports %}
+        <tr><td>{{ p.port }}</td><td>{{ p.service }}</td><td class="banner">{{ p.banner }}</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% endfor %}
+  {% else %}
+  <div class="card">No results yet. Run the scanner to generate results.json</div>
+  {% endif %}
+</body>
+</html>
